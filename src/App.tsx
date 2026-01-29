@@ -18,9 +18,13 @@ import {
   Database,
   Server,
   Cloud,
-  GitBranch,
-  Terminal,
-  Cpu
+  GitBranch, 
+  Terminal, 
+  Cpu,
+  Container,
+  Wind,
+  Workflow,
+  Box
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -193,7 +197,7 @@ function HeroSection() {
           <h1 className={`text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 font-['Space_Grotesk'] leading-tight transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             Hi I am <span className="text-gradient">Hardik</span>,
             <br />
-            <span className="text-[#9aba9a]">Full Stack Developer...</span>
+            <span className="text-[#9aba9a]">Full Stack Developer</span>
           </h1>
 
           <p className={`text-lg text-[#a8b8a8] max-w-2xl mx-auto mb-10 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
@@ -211,7 +215,7 @@ function HeroSection() {
           <div className={`mt-20 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <p className="text-[#6a8a6a] text-sm mb-6 uppercase tracking-wider">Tech Stack</p>
             <div className="flex flex-wrap justify-center gap-8 items-center">
-              {['React', 'Next.js', 'Node.js', 'TypeScript', 'AWS'].map((tech, index) => (
+              {['React', 'Next.js', 'Node.js', 'Docker', 'AWS', 'PostgreSQL'].map((tech, index) => (
                 <span key={index} className="text-[#8a9a8a] text-sm font-medium">{tech}</span>
               ))}
             </div>
@@ -243,34 +247,59 @@ function AboutSection() {
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="py-32 relative overflow-hidden bg-[#0d1a0d]">
-      <img src="/blob-3.png" alt="" className="absolute left-10 bottom-20 w-[350px] opacity-30 animate-blob-float-slow" />
+    <section id="about" ref={sectionRef} className="py-15 relative overflow-hidden bg-[#0d1a0d]">
+      {/* Immersive LeetCode Background - High Visibility */}
+      <div className={`absolute inset-0 z-0 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-200 scale-100' : 'opacity-200 scale-105'}`}>
+        <img 
+          src="/leetcode-profile.png" 
+          alt="" 
+          className="w-full h-full object-cover grayscale brightness-[1] contrast-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0d1a0d] via-transparent to-[#0d1a0d] opacity-90" />
+        <div className="absolute inset-0 bg-[#0d1a0d]/20" /> {/* Softer tint */}
+      </div>
+
+      <img src="/blob-3.png" alt="" className="absolute left-10 bottom-20 w-[350px] opacity-30 animate-blob-float-slow z-10" />
       
-      <div className="max-w-5xl mx-auto px-6 lg:px-8 relative z-10">
+      <div className="max-w-5xl mx-auto px-6 lg:px-8 relative z-20">
         <div className={`text-center mb-16 transition-all duration-800 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="flex justify-center mb-12">
-            <img src="/layers.png" alt="Layers" className={`w-64 h-64 transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`} />
+            <div className="relative group">
+              <img src="/layers.png" alt="Layers" className={`w-64 h-64 transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'} group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`} />
+              <div className="absolute -inset-4 bg-[#9aba9a]/20 blur-3xl -z-10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </div>
           </div>
           
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6 font-['Space_Grotesk']">
             Who Am I / <span className="text-[#9aba9a]">Pushing Boundaries</span>
           </h2>
           
-          <p className="text-lg text-[#a8b8a8] max-w-3xl mx-auto leading-relaxed mb-12">
+          <p className="text-lg text-[#b2c8b2] max-w-3xl mx-auto leading-relaxed mb-12 backdrop-blur-[2px]">
             I am a Computer Science student at Lovely Professional University with a passion for full-stack development. 
             I specialize in building scalable web applications using the MERN stack and modern frameworks like Next.js.
           </p>
 
           <div className="grid sm:grid-cols-3 gap-8">
             {[
-              { value: '600+', label: 'DSA Problems' },
-              { value: '3', label: 'Major Projects' },
-              { value: 'Top 8%', label: 'LeetCode' },
+              { value: '600+', label: 'DSA Problems', detail: 'Consistent Problem Solver' },
+              { value: '4', label: 'Major Projects', detail: 'Real-world Solutions' },
+              { value: 'Top 8%', label: 'LeetCode', detail: 'Global Ranking' },
             ].map((stat, index) => (
               <div key={index} className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${(index + 2) * 150}ms` }}>
-                <div className="platform-surface p-8 card-3d">
-                  <p className="text-4xl font-bold text-[#9aba9a] mb-2">{stat.value}</p>
-                  <p className="text-[#8a9a8a]">{stat.label}</p>
+                <div className="platform-surface p-8 card-3d group relative overflow-hidden cursor-default">
+                  {/* Hover Detail Overlay */}
+                  <div className="absolute inset-0 bg-[#9aba9a]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  <div className="relative z-10">
+                    <p className="text-4xl font-bold text-[#9aba9a] mb-2 group-hover:scale-110 transition-transform duration-300">{stat.value}</p>
+                    <p className="text-white font-semibold mb-1">{stat.label}</p>
+                    <p className="text-[#6a8a6a] text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                      {stat.detail}
+                    </p>
+                  </div>
+
+                  {/* Decorative corner glow */}
+                  <div className="absolute -top-10 -right-10 w-20 h-20 bg-[#9aba9a]/10 blur-2xl rounded-full group-hover:bg-[#9aba9a]/20 transition-all duration-500" />
                 </div>
               </div>
             ))}
@@ -289,58 +318,130 @@ function SkillsSection() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
   const skills = [
-    { icon: Code2, name: 'React', category: 'Frontend' },
-    { icon: Layers, name: 'Next.js', category: 'Frontend' },
-    { icon: Server, name: 'Node.js', category: 'Backend' },
-    { icon: Database, name: 'MongoDB', category: 'Database' },
-    { icon: Cloud, name: 'AWS', category: 'DevOps' },
-    { icon: GitBranch, name: 'Git', category: 'Tools' },
-    { icon: Terminal, name: 'TypeScript', category: 'Language' },
-    { icon: Cpu, name: 'Redis', category: 'Database' },
+    { icon: Code2, name: 'React', category: 'Frontend', level: '95%' },
+    { icon: Layers, name: 'Next.js', category: 'Frontend', level: '90%' },
+    { icon: Wind, name: 'Tailwind', category: 'Frontend', level: '95%' },
+    { icon: Workflow, name: 'Redux', category: 'Frontend', level: '85%' },
+    { icon: Server, name: 'Node.js', category: 'Backend', level: '88%' },
+    { icon: Database, name: 'PostgreSQL', category: 'Database', level: '82%' },
+    { icon: Box, name: 'MongoDB', category: 'Database', level: '90%' },
+    { icon: Cpu, name: 'Redis', category: 'Database', level: '75%' },
+    { icon: Container, name: 'Docker', category: 'DevOps', level: '80%' },
+    { icon: Cloud, name: 'AWS', category: 'DevOps', level: '70%' },
+    { icon: GitBranch, name: 'Git', category: 'Tools', level: '92%' },
+    { icon: Terminal, name: 'TypeScript', category: 'Language', level: '88%' },
   ];
 
   return (
     <section id="skills" ref={sectionRef} className="py-32 relative overflow-hidden bg-[#0d1a0d]">
-      <img src="/blob-2.png" alt="" className="absolute -left-20 top-1/2 -translate-y-1/2 w-[400px] opacity-30 animate-blob-float-slow" />
+      {/* Dynamic Background Elements */}
+      <div className="absolute inset-0 bg-grid-sage opacity-50" />
+      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0d1a0d] to-transparent z-10" />
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0d1a0d] to-transparent z-10" />
       
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className={`text-center mb-20 transition-all duration-800 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h2 className="text-4xl sm:text-5xl font-bold text-white font-['Space_Grotesk']">
-            My <span className="text-[#9aba9a]">Skills</span>
-          </h2>
-          <p className="text-[#a8b8a8] mt-4">Technologies I work with</p>
+      <img src="/blob-2.png" alt="" className="absolute -left-20 top-1/4 w-[500px] opacity-20 blur-3xl animate-blob-float-slow" />
+      <img src="/blob-3.png" alt="" className="absolute -right-20 bottom-1/4 w-[400px] opacity-20 blur-3xl animate-blob-float" />
+      
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-20">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-5">
+          <div className={`transition-all duration-800 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+            <Badge className="bg-[#9aba9a]/10 text-[#9aba9a] border-[#9aba9a]/20 mb-4 px-4 py-1">Technical Expertise</Badge>
+            <h2 className="text-5xl sm:text-6xl font-bold text-white font-['Space_Grotesk'] leading-tight">
+              Mastering the <br />
+              <span className="text-gradient">Digital Craft</span>
+            </h2>
+          </div>
+          <div className={`max-w-md transition-all duration-800 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+            <p className="text-[#a8b8a8] text-lg leading-relaxed">
+              From architecting robust backends to crafting pixel-perfect frontends, I use a modern stack to build high-performance applications.
+            </p>
+          </div>
         </div>
 
         <div className="relative">
-          {/* Stairs Image */}
-          <div className={`flex justify-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-            <img src="/stairs.png" alt="Skills Stairs" className="w-full max-w-3xl" />
+          {/* Background Decorative Text */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none select-none overflow-hidden opacity-[0.05]">
+            <div className="text-[30rem] font-black text-white whitespace-nowrap animate-scroll-text flex gap-20 items-center h-full">
+              <span>FRONTEND   BACKEND   DATABASE   DEVOPS   TOOLS</span>
+              <span>FRONTEND   BACKEND   DATABASE   DEVOPS   TOOLS</span>
+              <span>FRONTEND   BACKEND   DATABASE   DEVOPS   TOOLS</span>
+            </div>
           </div>
 
-          {/* Skills Grid - Placed like on stairs */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {skills.map((skill, index) => (
-              <div 
-                key={index}
-                className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                style={{ transitionDelay: `${(index + 1) * 100}ms` }}
-              >
-                <div className="platform-surface p-6 card-3d text-center group">
-                  <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-[#9aba9a]/20 to-[#6a8a6a]/20 flex items-center justify-center border border-[#9aba9a]/30 group-hover:border-[#9aba9a]/60 transition-colors">
-                    <skill.icon className="w-7 h-7 text-[#9aba9a]" />
+          <div className="overflow-x-auto pb-10 pt-0 no-scrollbar relative z-10">
+            <div className="flex gap-12 px-10 items-end min-w-max h-[520px]">
+              {skills.map((skill, index) => (
+                <div 
+                  key={index}
+                  className={`flex-shrink-0 transition-all duration-1000 ${
+                    isVisible ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  style={{ 
+                    transitionDelay: `${index * 60}ms`,
+                    transform: isVisible ? `translateY(-${index * 32}px)` : 'translateY(120px)'
+                  }}
+                >
+                  <div className="relative group">
+                    {/* Sage Glow behind skill */}
+                    <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-40 h-40 bg-[#9aba9a]/5 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    
+                    {/* Stair Step / Platform */}
+                    <div className="w-48 h-14 platform-surface flex items-center justify-center relative card-3d cursor-pointer group">
+                      {/* Depth effect for the stair */}
+                      <div className="absolute top-full left-0 right-0 h-8 bg-[#1a2a1a] border-x border-b border-[#2a3a2a] -z-10 group-hover:h-10 transition-all duration-300" />
+                      
+                      {/* Skill Content on top of the step */}
+                      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-44 flex flex-col items-center group-hover:-translate-y-4 transition-transform duration-300">
+                        {/* Level Indicator (New) */}
+                        <div className="mb-4 w-full px-8 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                          <div className="flex justify-between text-[10px] text-[#9aba9a] mb-1 font-mono uppercase tracking-widest">
+                            <span>Proficiency</span>
+                            <span>{skill.level}</span>
+                          </div>
+                          <div className="h-0.5 w-full bg-[#1a2a1a] rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-[#9aba9a] transition-all duration-1000 delay-300" 
+                              style={{ width: isVisible ? skill.level : '0%' }} 
+                            />
+                          </div>
+                        </div>
+
+                        {/* Logo Container */}
+                        <div className="w-20 h-20 rounded-2xl bg-[#0d1a0d]/95 backdrop-blur-md border border-[#9aba9a]/20 flex items-center justify-center mb-4 shadow-2xl shadow-black/50 group-hover:border-[#9aba9a]/50 group-hover:shadow-[#9aba9a]/10 transition-all duration-500 relative overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#9aba9a]/10 to-transparent" />
+                          <skill.icon className="w-10 h-10 text-[#9aba9a] relative z-10 group-hover:scale-110 transition-transform duration-500" />
+                        </div>
+
+                        {/* Text Content */}
+                        <div className="text-center">
+                          <h3 className="text-white font-bold text-lg leading-none mb-2 tracking-tight">{skill.name}</h3>
+                          <Badge className="bg-[#9aba9a]/5 text-[#9aba9a]/80 border-[#9aba9a]/20 text-[10px] px-2 py-0 h-4 uppercase tracking-widest font-medium">
+                            {skill.category}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-1">{skill.name}</h3>
-                  <p className="text-[#6a8a6a] text-sm">{skill.category}</p>
                 </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Enhanced Scroll Navigation Hint */}
+          <div className={`flex flex-col items-center mt-10 transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+            <div className="platform-surface px-6 py-2 border border-[#9aba9a]/10 flex items-center gap-3">
+              <span className="text-[#a9b9a9] text-[10px] uppercase tracking-[0.3em] font-medium">Drag or Scroll to explore</span>
+              <div className="w-24 h-px bg-[#2a3a2a] relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#9aba9a] to-transparent w-12 animate-scroll-indicator" />
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
@@ -348,7 +449,7 @@ function SkillsSection() {
   );
 }
 
-// Projects Section with All 4 Projects
+// Projects Section with Immersive Design
 function ProjectsSection() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
@@ -356,7 +457,7 @@ function ProjectsSection() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
-      { threshold: 0.1 }
+      { threshold: 0.05 }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
@@ -364,116 +465,148 @@ function ProjectsSection() {
 
   const projects = [
     {
+      number: '01',
       title: 'Sentinel',
-      subtitle: 'Uptime & SSL Monitoring SaaS',
-      description: 'A serverless, event-driven monitoring engine for tracking website uptime and SSL certificate expiry. Features real-time analytics, intelligent notifications, and Stripe subscription integration with 99.9% reliability.',
+      subtitle: 'Cloud Native Monitoring',
+      description: 'Engineered a highly available uptime monitoring SaaS. Leveraged serverless architecture to achieve millisecond latency in global health checks. Integrated real-time alerting via Webhooks and Discord.',
       image: '/project-sentinel.png',
-      tech: ['Next.js', 'AWS Lambda', 'PostgreSQL', 'Redis'],
+      tech: ['Next.js', 'AWS Lambda', 'SQS', 'PostgreSQL', 'Redis'],
       github: 'https://github.com/hardiksharmaa/sentinel',
-      live: '#',
-      featured: true
+      live: 'https://sentinel.deez.pro',
+      color: '#4f46e5'
     },
     {
+      number: '02',
       title: 'CodeX',
-      subtitle: 'Gamified Coding Platform',
-      description: 'A full-stack gamified SaaS platform for learning to code with an in-browser IDE, progress tracking, and subscription-based access control.',
+      subtitle: 'The Future of Learning',
+      description: 'A gamified ecosystem for developers. Integrated a robust in-browser execution engine for 10+ languages. Features a reward-based progress system and community challenges.',
       image: '/project-codex.png',
       tech: ['Next.js', 'PostgreSQL', 'CodeSandbox', 'Clerk'],
       github: 'https://github.com/hardiksharmaa/codeX',
-      live: '#',
-      featured: false
+      live: 'https://codex.deez.pro',
+      color: '#eab308'
     },
     {
+      number: '03',
       title: 'Quick.ai',
-      subtitle: 'AI Content Generation SaaS',
-      description: 'A full-stack PERN application for AI-driven content creation, integrating Google Gemini and Clipdrop APIs for article writing and image generation.',
+      subtitle: 'AI-Powered Creativity',
+      description: 'Built a multi-modal AI platform for automated content generation. Orchestrated multiple AI models (Gemini, Stable Diffusion) into a seamless user workflow with persistent state management.',
       image: '/project-quickai.png',
-      tech: ['React', 'Express', 'PostgreSQL', 'Clerk'],
+      tech: ['React', 'Express', 'PostgreSQL', 'Clerk', 'AI'],
       github: 'https://github.com/hardiksharmaa/QuickAI',
-      live: '#',
-      featured: false
+      live: 'https://quickai.deez.pro',
+      color: '#8b5cf6'
     },
     {
+      number: '04',
       title: 'Antojitos',
-      subtitle: 'Food Delivery App',
-      description: 'A full-stack food delivery platform with restaurant listings, menu management, cart functionality, and order tracking. Features user authentication and real-time order updates.',
-      image: '/project-realestate.png',
-      tech: ['React', 'Node.js', 'MongoDB', 'Express'],
-      github: '#',
-      live: 'https://food-del-frontend-seay.onrender.com',
-      featured: false
+      subtitle: 'Seamless Food Logistics',
+      description: 'Developed a comprehensive end-to-end food delivery solution. Focused on real-time cart synchronization and optimized delivery routing. Features a specialized dashboard for restaurant partners.',
+      image: '/project-antojitos.png',
+      tech: ['React', 'Node.js', 'MongoDB', 'Express', 'Stripe'],
+      github: 'https://github.com/hardiksharmaa/food-del',
+      live: 'https://antojitos.deez.pro',
+      color: '#f43f5e'
     }
   ];
 
   return (
-    <section id="projects" ref={sectionRef} className="py-32 relative overflow-hidden bg-[#0d1a0d]">
-      <img src="/blob-1.png" alt="" className="absolute -right-40 top-0 w-[500px] opacity-30 animate-blob-float" />
-      
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className={`text-center mb-16 transition-all duration-800 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h2 className="text-4xl sm:text-5xl font-bold text-white font-['Space_Grotesk']">
-            My <span className="text-[#9aba9a]">Projects</span>
+    <section id="projects" ref={sectionRef} className="py-15 relative overflow-hidden bg-[#0d1a0d]">
+      {/* Decorative Background */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none overflow-hidden select-none opacity-[0.07] z-0">
+        <div className="text-[35vw] font-black text-white leading-none tracking-tighter absolute top-10 left-1/2 -translate-x-1/2">
+          WORK
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        <div className={`flex flex-col items-center text-center mb-24 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <Badge className="bg-[#9aba9a]/10 text-[#9aba9a] border-[#9aba9a]/20 mb-4 px-4 py-1">Portfolio</Badge>
+          <h2 className="text-5xl sm:text-7xl font-bold text-white font-['Space_Grotesk'] tracking-tight mb-6">
+            Featured <span className="text-gradient">Creations</span>
           </h2>
-          <p className="text-[#a8b8a8] mt-4">Things I have built</p>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#9aba9a] to-transparent rounded-full" />
         </div>
 
-        {/* Featured Project - Sentinel */}
-        <div className={`mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-          <div className="platform-surface p-8 card-3d">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="relative overflow-hidden rounded-xl">
-                <img src={projects[0].image} alt={projects[0].title} className="w-full h-64 object-cover" />
+        <div className="space-y-32">
+          {projects.map((project, index) => (
+            <div 
+              key={index}
+              className={`group relative grid lg:grid-cols-12 gap-12 items-center transition-all duration-1000 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
+            >
+              {/* Image Side */}
+              <div className={`lg:col-span-7 relative ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
+                {/* Project Number Background */}
+                <div className="absolute -top-16 -left-10 text-9xl font-black text-white/[0.03] select-none group-hover:text-[#9aba9a]/[0.20] transition-colors duration-700">
+                  {project.number}
+                </div>
+                
+                <div className="relative z-10 overflow-hidden rounded-2xl platform-surface p-2 transition-transform duration-700 group-hover:scale-[1.02] group-hover:-rotate-1">
+                  <div className="relative aspect-video overflow-hidden rounded-xl">
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d1a0d]/80 via-transparent to-transparent opacity-60" />
+                  </div>
+                  
+                  {/* Glowing Edge on Hover */}
+                  <div 
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                    style={{ boxShadow: `inset 0 0 40px ${project.color}33` }}
+                  />
+                </div>
+
+                {/* Decorative Elements */}
+                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#9aba9a]/5 blur-3xl rounded-full -z-10 animate-pulse" />
               </div>
-              <div>
-                <Badge className="bg-[#9aba9a]/10 text-[#9aba9a] border-[#9aba9a]/30 mb-4">Featured Project</Badge>
-                <h3 className="text-3xl font-bold text-white mb-2">{projects[0].title}</h3>
-                <p className="text-[#9aba9a] mb-4">{projects[0].subtitle}</p>
-                <p className="text-[#a8b8a8] mb-6">{projects[0].description}</p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {projects[0].tech.map((tech, i) => (
-                    <Badge key={i} variant="secondary" className="bg-[#1a2a1a] text-[#8a9a8a] border-[#2a3a2a]">{tech}</Badge>
+
+              {/* Content Side */}
+              <div className={`lg:col-span-5 flex flex-col ${index % 2 === 0 ? 'lg:order-2 lg:items-start' : 'lg:order-1 lg:items-end text-right'}`}>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-sm font-mono text-[#9aba9a] tracking-widest">{project.number}</span>
+                  <div className="w-10 h-px bg-[#2a3a2a]" />
+                  <span className="text-sm font-medium text-[#6a8a6a] uppercase tracking-widest">{project.subtitle}</span>
+                </div>
+
+                <h3 className="text-4xl sm:text-5xl font-bold text-white mb-6 group-hover:text-[#9aba9a] transition-colors duration-300">
+                  {project.title}
+                </h3>
+
+                <p className="text-lg text-[#a8b8a8] leading-relaxed mb-8">
+                  {project.description}
+                </p>
+
+                <div className={`flex flex-wrap gap-2 mb-10 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                  {project.tech.map((tech, i) => (
+                    <Badge 
+                      key={i} 
+                      className="bg-[#1a2a1a] text-[#8a9a8a] border-[#2a3a2a] group-hover:border-[#9aba9a]/30 transition-colors py-1 px-3"
+                    >
+                      {tech}
+                    </Badge>
                   ))}
                 </div>
+
                 <div className="flex gap-4">
-                  <Button className="bg-[#9aba9a] hover:bg-[#8aaa8a] text-[#0d1a0d] rounded-full" onClick={() => window.open(projects[0].github, '_blank')}>
-                    <Github className="w-4 h-4 mr-2" />
-                    View Code
+                  <Button 
+                    className="bg-[#9aba9a] hover:bg-[#8aaa8a] text-[#0d1a0d] rounded-full px-8 h-12 font-bold group/btn"
+                    onClick={() => window.open(project.github, '_blank')}
+                  >
+                    <Github className="w-4 h-4 mr-2 group-hover/btn:rotate-12 transition-transform" />
+                    Source
                   </Button>
-                  <Button variant="outline" className="border-[#3a4a3a] text-white hover:bg-[#2a3a2a] rounded-full">
+                  <Button 
+                    variant="outline" 
+                    className="border-[#3a4a3a] text-white hover:bg-[#2a3a2a] rounded-full px-8 h-12"
+                    onClick={() => window.open(project.live, '_blank')}
+                  >
                     <ExternalLink className="w-4 h-4 mr-2" />
-                    Live Demo
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Other Projects Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
-          {projects.slice(1).map((project, index) => (
-            <div key={index} className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${(index + 1) * 150}ms` }}>
-              <div className="platform-surface p-4 card-3d group cursor-pointer h-full flex flex-col">
-                <div className="relative overflow-hidden rounded-xl mb-4">
-                  <img src={project.image} alt={project.title} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d1a0d]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-1">{project.title}</h3>
-                <p className="text-[#9aba9a] text-sm mb-2">{project.subtitle}</p>
-                <p className="text-[#8a9a8a] text-sm mb-4 flex-grow">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech.slice(0, 3).map((t, i) => (
-                    <Badge key={i} className="bg-[#9aba9a]/10 text-[#9aba9a] text-xs">{t}</Badge>
-                  ))}
-                </div>
-                <div className="flex gap-2">
-                  <Button size="sm" className="flex-1 bg-[#9aba9a] hover:bg-[#8aaa8a] text-[#0d1a0d] rounded-full" onClick={() => window.open(project.github, '_blank')}>
-                    <Github className="w-4 h-4 mr-1" />
-                    Code
-                  </Button>
-                  <Button size="sm" variant="outline" className="flex-1 border-[#3a4a3a] text-white hover:bg-[#2a3a2a] rounded-full" onClick={() => window.open(project.live, '_blank')}>
-                    <ExternalLink className="w-4 h-4 mr-1" />
-                    Live
+                    Visit
                   </Button>
                 </div>
               </div>
@@ -517,7 +650,7 @@ function ContactSection() {
       
       <div className="max-w-5xl mx-auto px-6 lg:px-8 relative z-10">
         <div className={`text-center mb-16 transition-all duration-800 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center mb-10">
             <img src="/platform.png" alt="Platform" className={`w-48 h-48 transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`} />
           </div>
           
@@ -569,9 +702,9 @@ function ContactSection() {
               <div className="flex gap-4">
                 {[
                   { icon: Github, url: 'https://github.com/hardiksharmaa' },
-                  { icon: Linkedin, url: 'https://linkedin.com' },
-                  { icon: Globe, url: 'https://leetcode.com' },
-                  { icon: Instagram, url: 'https://instagram.com' },
+                  { icon: Linkedin, url: 'https://www.linkedin.com/in/hardiksh121' },
+                  { icon: Code2, url: 'https://leetcode.com/u/hardik_sharma12' },
+                  { icon: Instagram, url: 'https://www.instagram.com/whyhardikk' },
                 ].map((social, index) => (
                   <a key={index} href={social.url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl bg-[#1a2a1a] flex items-center justify-center hover:bg-[#2a3a2a] transition-colors group">
                     <social.icon className="w-5 h-5 text-[#8a9a8a] group-hover:text-[#9aba9a] transition-colors" />
@@ -586,12 +719,12 @@ function ContactSection() {
               <div className="space-y-6">
                 <div>
                   <label className="text-[#8a9a8a] text-sm mb-2 block">Your Name</label>
-                  <Input type="text" placeholder="John Doe" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="bg-[#1a2a1a] border-[#2a3a2a] text-white placeholder:text-[#5a6a5a] focus:border-[#9aba9a] focus:ring-[#9aba9a]/20 rounded-xl" />
+                  <Input type="text" placeholder="Hardik" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="bg-[#1a2a1a] border-[#2a3a2a] text-white placeholder:text-[#5a6a5a] focus:border-[#9aba9a] focus:ring-[#9aba9a]/20 rounded-xl" />
                 </div>
                 
                 <div>
                   <label className="text-[#8a9a8a] text-sm mb-2 block">Your Email</label>
-                  <Input type="email" placeholder="john@example.com" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required className="bg-[#1a2a1a] border-[#2a3a2a] text-white placeholder:text-[#5a6a5a] focus:border-[#9aba9a] focus:ring-[#9aba9a]/20 rounded-xl" />
+                  <Input type="email" placeholder="hardik@example.com" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required className="bg-[#1a2a1a] border-[#2a3a2a] text-white placeholder:text-[#5a6a5a] focus:border-[#9aba9a] focus:ring-[#9aba9a]/20 rounded-xl" />
                 </div>
                 
                 <div>
