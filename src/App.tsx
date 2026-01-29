@@ -12,7 +12,6 @@ import {
   Send,
   Code2,
   Layers,
-  Globe,
   X,
   Menu,
   Database,
@@ -24,7 +23,8 @@ import {
   Container,
   Wind,
   Workflow,
-  Box
+  Box,
+  Heart
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -253,8 +253,9 @@ function AboutSection() {
         <img 
           src="/leetcode-profile.png" 
           alt="" 
-          className="w-full h-full object-cover grayscale brightness-[1] contrast-110"
+          className="w-full h-full object-cover grayscale brightness-[0.6] contrast-125 scale-105"
         />
+
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d1a0d] via-transparent to-[#0d1a0d] opacity-90" />
         <div className="absolute inset-0 bg-[#0d1a0d]/20" /> {/* Softer tint */}
       </div>
@@ -270,11 +271,17 @@ function AboutSection() {
             </div>
           </div>
           
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6 font-['Space_Grotesk']">
-            Who Am I / <span className="text-[#9aba9a]">Pushing Boundaries</span>
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6 font-['Space_Grotesk'] backdrop-blur-[3px]">
+            Who Am I / <span className="text-[#9aba9a] relative">
+            Pushing Boundaries
+            <span className="absolute left-0 -bottom-2 w-full h-[2px] bg-[#9aba9a]/40 rounded-full" />
+          </span>
+
           </h2>
           
-          <p className="text-lg text-[#b2c8b2] max-w-3xl mx-auto leading-relaxed mb-12 backdrop-blur-[2px]">
+          <p className="text-lg text-[#d6e2d6] max-w-3xl mx-auto leading-relaxed 
+          bg-[#0d1a0d]/40 backdrop-blur-md px-6 py-4 rounded-2xl shadow-lg">
+
             I am a Computer Science student at Lovely Professional University with a passion for full-stack development. 
             I specialize in building scalable web applications using the MERN stack and modern frameworks like Next.js.
           </p>
@@ -285,15 +292,15 @@ function AboutSection() {
               { value: '4', label: 'Major Projects', detail: 'Real-world Solutions' },
               { value: 'Top 8%', label: 'LeetCode', detail: 'Global Ranking' },
             ].map((stat, index) => (
-              <div key={index} className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${(index + 2) * 150}ms` }}>
+              <div key={index} className={`transition-all duration-700 ${isVisible ? 'opacity-50 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${(index + 2) * 150}ms` }}>
                 <div className="platform-surface p-8 card-3d group relative overflow-hidden cursor-default">
                   {/* Hover Detail Overlay */}
                   <div className="absolute inset-0 bg-[#9aba9a]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   <div className="relative z-10">
-                    <p className="text-4xl font-bold text-[#9aba9a] mb-2 group-hover:scale-110 transition-transform duration-300">{stat.value}</p>
+                    <p className="text-4xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">{stat.value}</p>
                     <p className="text-white font-semibold mb-1">{stat.label}</p>
-                    <p className="text-[#6a8a6a] text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                    <p className="text-white text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                       {stat.detail}
                     </p>
                   </div>
@@ -437,7 +444,7 @@ function SkillsSection() {
           {/* Enhanced Scroll Navigation Hint */}
           <div className={`flex flex-col items-center mt-10 transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
             <div className="platform-surface px-6 py-2 border border-[#9aba9a]/10 flex items-center gap-3">
-              <span className="text-[#a9b9a9] text-[10px] uppercase tracking-[0.3em] font-medium">Drag or Scroll to explore</span>
+              <span className="text-[#a9b9a9] text-[10px] uppercase tracking-[0.3em] font-medium">Scroll to explore</span>
               <div className="w-24 h-px bg-[#2a3a2a] relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#9aba9a] to-transparent w-12 animate-scroll-indicator" />
               </div>
@@ -635,13 +642,39 @@ function ContactSection() {
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    toast.success('Message sent successfully! I will get back to you soon.');
-    setFormData({ name: '', email: '', message: '' });
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      toast.success("Message sent successfully! I will get back to you soon.");
+      setFormData({ name: "", email: "", message: "" });
+    } else {
+      toast.error("Something went wrong. Please try again.");
+    }
+  } catch (error) {
+    toast.error("Failed to send message. Please try again later.");
+  } finally {
     setIsSubmitting(false);
-  };
+  }
+};
+
 
   return (
     <section id="contact" ref={sectionRef} className="py-32 relative overflow-hidden bg-[#0d1a0d]">
@@ -650,9 +683,22 @@ function ContactSection() {
       
       <div className="max-w-5xl mx-auto px-6 lg:px-8 relative z-10">
         <div className={`text-center mb-16 transition-all duration-800 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="flex justify-center mb-10">
-            <img src="/platform.png" alt="Platform" className={`w-48 h-48 transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`} />
+          <div className="flex justify-center  relative">
+            {/* Floating Heart above rock */}
+            <Heart className="absolute w-10 h-10 text-[#9aba9a]/80 
+            drop-shadow-[0_0_12px_rgba(154,186,154,0.35)] 
+            animate-float-slow" />
+
+
+            {/* Rock / Platform */}
+            <img
+              src="/platform.png"
+              alt="Platform"
+              className={`w-48 h-48 transition-all duration-1000 
+              ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
+            />
           </div>
+
           
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4 font-['Space_Grotesk']">
             Let us <span className="text-[#9aba9a]">Make It Happen</span>
@@ -783,7 +829,10 @@ function Footer() {
         
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-[#6a8a6a] text-sm">
           <p>© 2025 Hardik Sharma. All rights reserved.</p>
-          <p>Built with React, TypeScript & Tailwind CSS</p>
+          <p className="flex items-center gap-2 text-[#6a8a6a]">
+            Built with Heart
+            <Heart className="w-4 h-4" />
+          </p>
         </div>
       </div>
     </footer>
